@@ -82,10 +82,10 @@ export default function Home() {
           {/* Graph Button */}
           <div className="flex justify-center">
             <Link href="/graph">
-              <button className="group flex items-center gap-4 px-12 py-6 rounded-2xl font-bold text-lg transition-all duration-300 cursor-pointer hover:scale-105 active:scale-100 overflow-hidden shadow-lg bg-linear-to-br from-[rgb(216,121,67)] to-[rgb(82,117,117)] text-white">
+              <button className="group flex items-center gap-3 px-8 py-4 rounded-xl font-semibold text-base transition-all duration-300 cursor-pointer hover:scale-105 active:scale-100 overflow-hidden shadow-lg bg-linear-to-br from-[rgb(216,121,67)] to-[rgb(82,117,117)] text-white">
                 <svg 
-                  width="28" 
-                  height="28" 
+                  width="22" 
+                  height="22" 
                   viewBox="0 0 24 24" 
                   fill="none" 
                   stroke="currentColor" 

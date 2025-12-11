@@ -25,7 +25,7 @@ export default function ThemeToggle() {
     <button
       onClick={toggleTheme}
       className="z-50 flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200 cursor-pointer hover:scale-105 animate-fade-in bg-card text-foreground border border-border shadow-lg"
-      style={{
+      style={{ 
         position: 'absolute',
         top: '1.5rem',
         right: '1.5rem'
