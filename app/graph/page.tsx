@@ -85,7 +85,8 @@ export default function GraphPage() {
         try {
           const name = id.endsWith(".eth") ? id.slice(0, -4) : id;
           const data = await fetchENSData(name);
-          updates[id] = data.avatar;
+          const fallbackProfile = `https://metadata.ens.domains/mainnet/avatar/${id}`;
+          updates[id] = data.avatar || fallbackProfile;
         } catch (e) {
           updates[id] = undefined;
         }
@@ -204,20 +205,20 @@ export default function GraphPage() {
         </Link>
       </div>
 
-      <main className="flex-1 flex items-center justify-center px-6 lg:px-8">
+      <main className="flex-1 flex items-center justify-center -mt-14 px-6 lg:px-8">
         <div className="w-full max-w-6xl animate-fade-in">
           {/* Header */}
-          <div className="mb-12 text-center">
-            <h1 className="mb-6 text-7xl font-bold md:text-8xl tracking-tight bg-linear-to-br from-[rgb(216,121,67)] to-[rgb(82,117,117)] bg-clip-text text-transparent">
+          <div className="mb-5 text-center">
+            <h1 className="mb-2 text-3xl font-bold md:text-5xl tracking-tight bg-linear-to-br from-[rgb(216,121,67)] to-[rgb(82,117,117)] bg-clip-text text-transparent">
               ENS Graph
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground">
+            <p className="text-lg md:text-xl text-muted-foreground">
               Visualize ENS domain relationships and connections
             </p>
           </div>
 
           {/* Form + Graph + List */}
-          <div className="rounded-2xl p-8 bg-card border-2 border-border shadow-xl space-y-6">
+          <div className="relative z-10 rounded-2xl p-8 bg-background border-2 border-border shadow-xl space-y-6">
             <form onSubmit={handleAddEdge} className="flex flex-col md:flex-row gap-4 items-start md:items-end">
               <div className="flex-1 w-full">
                 <label className="block text-sm font-semibold mb-2 text-foreground">From ENS</label>

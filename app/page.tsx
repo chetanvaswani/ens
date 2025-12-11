@@ -28,14 +28,14 @@ export default function Home() {
       {/* Dotted Background */}
       <div className="dot-pattern"></div>
       <ThemeToggle />
-      <main className="h-screen w-screen flex flex-col items-center justify-center">
-        <div className="w-full max-w-5xl h-full animate-fade-in flex flex-col justify-center gap-12">
+      <main className="h-screen w-screen flex flex-col items-center justify-center px-4 sm:px-6 py-8 sm:py-0">
+        <div className="w-full max-w-5xl h-full animate-fade-in flex flex-col justify-center gap-10 sm:gap-12">
           {/* Hero Section */}
           <div className="text-center">
-            <h1 className="mb-8 text-7xl font-bold md:text-8xl tracking-tight bg-linear-to-br from-[rgb(216,121,67)] to-[rgb(82,117,117)] bg-clip-text text-transparent">
+            <h1 className="mb-6 sm:mb-8 text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight bg-linear-to-br from-[rgb(216,121,67)] to-[rgb(82,117,117)] bg-clip-text text-transparent">
               ENS Lookup
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground">
+            <p className="text-base sm:text-lg md:text-2xl text-muted-foreground">
               Discover blockchain data for Ethereum Name Service domains
             </p>
           </div>
@@ -45,7 +45,7 @@ export default function Home() {
             <div className="w-full">
               {/* Input Container */}
               <div 
-                className={`flex items-center overflow-hidden transition-all duration-200 h-15 bg-card rounded-[18px] shadow-lg ${
+                className={`flex flex-col sm:flex-row items-stretch sm:items-center overflow-hidden transition-all duration-200 bg-card rounded-[18px] shadow-lg ${
                   isFocused ? 'ring-2 ring-ring ring-offset-0 shadow-[0_0_0_4px_rgba(216,121,67,0.1)]' : 'border-2 border-border'
                 }`}
               >
@@ -56,14 +56,14 @@ export default function Home() {
                   onKeyDown={handleKeyDown}
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setIsFocused(false)}
-                  placeholder="vitalik"
-                  className="flex-1 h-full bg-transparent outline-none text-2xl font-medium px-10 py-4 text-foreground placeholder:text-muted-foreground"
+                  placeholder="nick"
+                  className="flex-1 bg-transparent outline-none text-lg sm:text-2xl font-medium px-5 sm:px-10 py-4 text-foreground placeholder:text-muted-foreground"
                   autoFocus
                 />
                 <button
                   type="submit"
-                  className={`flex h-full items-center justify-center px-12 py-4 text-2xl font-bold cursor-pointer transition-all duration-200 hover:brightness-110 active:scale-95 bg-primary text-primary-foreground ${
-                    isFocused ? 'border-l-2 border-ring' : 'border-l-2 border-border'
+                  className={`flex items-center justify-center w-full sm:w-auto px-8 sm:px-12 py-3 sm:py-4 text-lg sm:text-2xl font-bold cursor-pointer transition-all duration-200 hover:brightness-110 active:scale-95 bg-primary text-primary-foreground ${
+                    isFocused ? 'sm:border-l-2 border-ring' : 'sm:border-l-2 border-border'
                   }`}
                 >
                   .eth
@@ -72,7 +72,7 @@ export default function Home() {
 
               {/* Keyboard hint */}
               <div className="mt-3 text-center">
-                <span className="text-sm text-muted-foreground opacity-70">
+                <span className="text-xs sm:text-sm text-muted-foreground opacity-70">
                   Press <kbd className="px-2.5 py-1.5 rounded text-sm font-mono mx-1 bg-muted border border-border">Enter ↵</kbd> or click <span className="font-bold text-primary">.eth</span> to search
                 </span>
               </div>
@@ -82,7 +82,7 @@ export default function Home() {
           {/* Graph Button */}
           <div className="flex justify-center">
             <Link href="/graph">
-              <button className="group flex items-center gap-3 px-8 py-4 rounded-xl font-semibold text-base transition-all duration-300 cursor-pointer hover:scale-105 active:scale-100 overflow-hidden shadow-lg bg-linear-to-br from-[rgb(216,121,67)] to-[rgb(82,117,117)] text-white">
+              <button className="group flex items-center gap-3 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-sm sm:text-base transition-all duration-300 cursor-pointer hover:scale-105 active:scale-100 overflow-hidden shadow-lg bg-linear-to-br from-[rgb(216,121,67)] to-[rgb(82,117,117)] text-white">
                 <svg 
                   width="22" 
                   height="22" 
