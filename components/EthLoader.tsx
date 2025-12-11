@@ -3,7 +3,6 @@
 export default function EthLoader({ text = "Loading..." }: { text?: string }) {
   return (
     <div className="flex flex-col gap-5 items-center justify-center py-20 animate-fade-in">
-
       <div className="mb-8">
         {/* Ethereum Diamond Logo */}
         <div className="eth-loader-container">
@@ -67,13 +66,13 @@ export default function EthLoader({ text = "Loading..." }: { text?: string }) {
       </div>
       
       <div className="text-center flex flex-col gap-5">
-        <p className="text-xl font-bold mb-2" style={{ color: "var(--foreground)" }}>
+        <p className="text-xl font-bold mb-2 text-foreground">
           {text}
         </p>
         <div className="flex items-center justify-center gap-1">
-          <div className="loading-dot" style={{ background: "var(--primary)" }}></div>
-          <div className="loading-dot" style={{ background: "var(--primary)", animationDelay: "0.2s" }}></div>
-          <div className="loading-dot" style={{ background: "var(--primary)", animationDelay: "0.4s" }}></div>
+          <div className="loading-dot bg-primary"></div>
+          <div className="loading-dot bg-primary" style={{ animationDelay: "0.2s" }}></div>
+          <div className="loading-dot bg-primary" style={{ animationDelay: "0.4s" }}></div>
         </div>
       </div>
     </div>

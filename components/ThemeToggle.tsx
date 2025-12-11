@@ -24,12 +24,11 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="fixed top-6 right-6 z-50 flex items-center justify-center w-12 h-12 rounded-xl transition-all cursor-pointer hover:scale-105 animate-fade-in"
-      style={{ 
-        background: "var(--card)",
-        color: "var(--foreground)",
-        border: "1px solid var(--border)",
-        boxShadow: "var(--shadow-lg)"
+      className="z-50 flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200 cursor-pointer hover:scale-105 animate-fade-in bg-card text-foreground border border-border shadow-lg"
+      style={{
+        position: 'absolute',
+        top: '1.5rem',
+        right: '1.5rem'
       }}
       aria-label="Toggle theme"
     >
