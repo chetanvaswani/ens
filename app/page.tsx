@@ -31,7 +31,7 @@ export default function Home() {
       <main className="h-screen w-screen flex flex-col items-center justify-center">
         <div className="w-full max-w-5xl h-full animate-fade-in flex flex-col justify-center gap-12">
           {/* Hero Section */}
-          <div className="mb-20 text-center">
+          <div className="text-center">
             <h1 className="mb-8 text-7xl font-bold md:text-8xl tracking-tight bg-linear-to-br from-[rgb(216,121,67)] to-[rgb(82,117,117)] bg-clip-text text-transparent">
               ENS Lookup
             </h1>
@@ -71,7 +71,7 @@ export default function Home() {
               </div>
 
               {/* Keyboard hint */}
-              <div className="mt-10 text-center">
+              <div className="mt-3 text-center">
                 <span className="text-sm text-muted-foreground opacity-70">
                   Press <kbd className="px-2.5 py-1.5 rounded text-sm font-mono mx-1 bg-muted border border-border">Enter ↵</kbd> or click <span className="font-bold text-primary">.eth</span> to search
                 </span>
