@@ -1,4 +1,4 @@
-import { Pool, QueryResult } from "pg";
+import { Pool } from "pg";
 
 const connectionString = process.env.DATABASE_URL;
 
@@ -31,7 +31,7 @@ export async function insertSocialEdge(params: {
   userId: string;
   ensFrom: string;
   ensTo: string;
-}): Promise<QueryResult> {
+}) {
   const { userId, ensFrom, ensTo } = params;
   const insertSQL = `
     INSERT INTO social_edges (user_id, ens_from, ens_to)
@@ -45,7 +45,7 @@ export async function insertSocialEdge(params: {
 export async function getSocialEdges(params?: {
   userId?: string;
   limit?: number;
-}): Promise<QueryResult> {
+}) {
   const userId = params?.userId?.trim();
   const limit = params?.limit ?? 500;
 
@@ -67,5 +67,19 @@ export async function getSocialEdges(params?: {
      LIMIT $1`,
     [limit]
   );
+}
+
+export async function deleteSocialEdge(params: {
+  id: number;
+  userId?: string;
+}) {
+  const { id, userId } = params;
+  if (userId) {
+    return pool.query(
+      `DELETE FROM social_edges WHERE id = $1 AND user_id = $2 RETURNING id`,
+      [id, userId.trim()]
+    );
+  }
+  return pool.query(`DELETE FROM social_edges WHERE id = $1 RETURNING id`, [id]);
 }
 

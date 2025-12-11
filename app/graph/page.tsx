@@ -30,6 +30,7 @@ export default function GraphPage() {
   const [error, setError] = useState<string | null>(null);
   const [avatars, setAvatars] = useState<Record<string, string | undefined>>({});
   const [images, setImages] = useState<Record<string, HTMLImageElement | undefined>>({});
+  const [deletingId, setDeletingId] = useState<number | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -130,6 +131,26 @@ export default function GraphPage() {
     }
   };
 
+  const handleDelete = async (id: number) => {
+    if (!userId) return;
+    setDeletingId(id);
+    setError(null);
+    try {
+      const res = await fetch(`/api/social?id=${id}&userId=${encodeURIComponent(userId)}`, {
+        method: "DELETE",
+      });
+      const json = await res.json();
+      if (!json.ok) {
+        throw new Error(json.error || "Failed to delete connection");
+      }
+      await fetchEdges();
+    } catch (err: any) {
+      setError(err?.message || "Failed to delete connection");
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   const handleAddEdge = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userId) return;
@@ -195,7 +216,7 @@ export default function GraphPage() {
             </p>
           </div>
 
-          {/* Form + Graph */}
+          {/* Form + Graph + List */}
           <div className="rounded-2xl p-8 bg-card border-2 border-border shadow-xl space-y-6">
             <form onSubmit={handleAddEdge} className="flex flex-col md:flex-row gap-4 items-start md:items-end">
               <div className="flex-1 w-full">
@@ -233,44 +254,78 @@ export default function GraphPage() {
               </div>
             )}
 
-            <div className="rounded-xl border border-border bg-muted min-h-[500px] overflow-hidden">
-              {loading ? (
-                <div className="h-[500px] flex items-center justify-center text-muted-foreground">
-                  Loading graph...
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2 rounded-xl border border-border bg-muted min-h-[500px] overflow-hidden">
+                {loading ? (
+                  <div className="h-[500px] flex items-center justify-center text-muted-foreground">
+                    Loading graph...
+                  </div>
+                ) : (
+                  <ForceGraph2D
+                    graphData={graphData}
+                    nodeLabel={(node: any) => node.id}
+                    nodeAutoColorBy="id"
+                    linkDirectionalArrowLength={6}
+                    linkDirectionalParticles={2}
+                    nodeCanvasObject={(node: any, ctx) => {
+                      const size = 12;
+                      const img = images[node.id];
+                      if (img) {
+                        ctx.save();
+                        ctx.beginPath();
+                        ctx.arc(node.x, node.y, size, 0, 2 * Math.PI, false);
+                        ctx.closePath();
+                        ctx.clip();
+                        ctx.drawImage(img, node.x - size, node.y - size, size * 2, size * 2);
+                        ctx.restore();
+                      } else {
+                        ctx.beginPath();
+                        ctx.arc(node.x, node.y, size, 0, 2 * Math.PI, false);
+                        ctx.fillStyle = "#d87943";
+                        ctx.fill();
+                        ctx.font = "10px sans-serif";
+                        ctx.fillStyle = "#ffffff";
+                        const label = (node.id as string).slice(0, 1).toUpperCase();
+                        ctx.fillText(label, node.x - 3, node.y + 3);
+                      }
+                    }}
+                    width={undefined}
+                    height={500}
+                  />
+                )}
+              </div>
+
+              <div className="rounded-xl border border-border bg-muted p-4 space-y-4 max-h-[500px] overflow-y-auto">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-foreground">Connections</h3>
+                  <span className="text-xs text-muted-foreground">{edges.length}</span>
                 </div>
-              ) : (
-                <ForceGraph2D
-                  graphData={graphData}
-                  nodeLabel={(node: any) => node.id}
-                  nodeAutoColorBy="id"
-                  linkDirectionalArrowLength={6}
-                  linkDirectionalParticles={2}
-                  nodeCanvasObject={(node: any, ctx) => {
-                    const size = 12;
-                    const img = images[node.id];
-                    if (img) {
-                      ctx.save();
-                      ctx.beginPath();
-                      ctx.arc(node.x, node.y, size, 0, 2 * Math.PI, false);
-                      ctx.closePath();
-                      ctx.clip();
-                      ctx.drawImage(img, node.x - size, node.y - size, size * 2, size * 2);
-                      ctx.restore();
-                    } else {
-                      ctx.beginPath();
-                      ctx.arc(node.x, node.y, size, 0, 2 * Math.PI, false);
-                      ctx.fillStyle = "#d87943";
-                      ctx.fill();
-                      ctx.font = "10px sans-serif";
-                      ctx.fillStyle = "#ffffff";
-                      const label = (node.id as string).slice(0, 1).toUpperCase();
-                      ctx.fillText(label, node.x - 3, node.y + 3);
-                    }
-                  }}
-                  width={undefined}
-                  height={500}
-                />
-              )}
+                {edges.length === 0 && (
+                  <p className="text-sm text-muted-foreground">No connections yet.</p>
+                )}
+                <div className="space-y-3">
+                  {edges.map((edge) => (
+                    <div
+                      key={edge.id}
+                      className="flex items-center justify-between rounded-lg border border-border bg-card px-3 py-2 text-sm"
+                    >
+                      <div className="flex flex-col">
+                        <span className="font-semibold text-foreground">{edge.ens_from} → {edge.ens_to}</span>
+                        <span className="text-xs text-muted-foreground">
+                          {new Date(edge.created_at).toLocaleString()}
+                        </span>
+                      </div>
+                      <button
+                        onClick={() => handleDelete(edge.id)}
+                        disabled={deletingId === edge.id}
+                        className="text-destructive text-xs font-semibold hover:underline disabled:opacity-60"
+                      >
+                        {deletingId === edge.id ? "Deleting..." : "Delete"}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
